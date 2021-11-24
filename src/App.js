@@ -5,13 +5,14 @@ import { Routes, Route } from "react-router-dom";
 import { ROUTE_ADD, ROUTE_HOMEPAGE } from "./routes";
 import { ContactListPage } from "./ContactListPage";
 import { AddContactPage } from "./AddContactPage";
-import { LanguageContext } from "./LanguageContext";
+import { IntlProvider } from "react-intl";
+import { translations } from "./translations";
 
 export function App() {
   const [language, setLanguage] = useState("cs");
 
   return (
-    <LanguageContext.Provider value={language}>
+    <IntlProvider locale={language} messages={translations[language]}>
       <div className="App">
         <Header>
           React
@@ -26,7 +27,7 @@ export function App() {
           </Routes>
         </Container>
       </div>
-    </LanguageContext.Provider>
+    </IntlProvider>
   );
 }
 

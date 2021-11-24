@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { saveContact } from "./contactsModel";
 import { ROUTE_HOMEPAGE } from "./routes";
 import * as yup from "yup";
-import { LanguageContext } from "./LanguageContext";
+import { FormattedDate, FormattedMessage, FormattedNumber } from "react-intl";
 
 export function AddContactPage() {
   const navigate = useNavigate();
@@ -18,15 +18,13 @@ export function AddContactPage() {
     retry: 3,
   });
 
-  const language = useContext(LanguageContext);
-  const titleTranslations = {
-    cs: "Přidat kontakt",
-    en: "Add contact",
-  };
-
   return (
     <>
-      <h1>{titleTranslations[language]}</h1>
+      <h1>
+        <FormattedMessage id="add-contact-title" />{" "}
+        <FormattedDate value={new Date()} />{" "}
+        <FormattedNumber value={8707.788} />
+      </h1>
       <p>
         <Link to={ROUTE_HOMEPAGE} className="btn btn-primary">
           Go Back
