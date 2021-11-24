@@ -1,3 +1,4 @@
+import { Formik } from "formik";
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useMutation } from "react-query";
@@ -29,42 +30,54 @@ export function AddContactPage() {
     </>
   );
 }
-function AddContactForm({ onAddContact }) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
 
-  function onSave() {
-    const contact = { name, email, phone };
-    setName("");
-    setEmail("");
-    setPhone("");
-    onAddContact(contact);
+const initFormData = {
+  name: "",
+  email: "@",
+  phone: "",
+};
+
+function AddContactForm({ onAddContact }) {
+  function onSave(values) {
+    onAddContact(values);
   }
 
   return (
-    <>
-      <Form.Group controlId="name">
-        <Form.Label>Name {name}</Form.Label>
-        <Form.Control value={name} onChange={(e) => setName(e.target.value)} />
-      </Form.Group>
-      <Form.Group controlId="email">
-        <Form.Label>Email</Form.Label>
-        <Form.Control
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </Form.Group>
-      <Form.Group controlId="phone">
-        <Form.Label>Phone</Form.Label>
-        <Form.Control
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-      </Form.Group>
-      <Form.Group>
-        <Button onClick={onSave}>Add Contact</Button>
-      </Form.Group>
-    </>
+    <Formik initialValues={initFormData} onSubmit={onSave}>
+      {({ values, handleSubmit, handleChange, handleBlur, isSubmitting }) => (
+        <form onSubmit={handleSubmit}>
+          <Form.Group controlId="name">
+            <Form.Label>Name {values.name}</Form.Label>
+            <Form.Control
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </Form.Group>
+          <Form.Group controlId="email">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </Form.Group>
+          <Form.Group controlId="phone">
+            <Form.Label>Phone</Form.Label>
+            <Form.Control
+              name="phone"
+              value={values.phone}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Button type="submit">Add Contact</Button>
+          </Form.Group>
+        </form>
+      )}
+    </Formik>
   );
 }
