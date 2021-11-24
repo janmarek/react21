@@ -1,4 +1,4 @@
-import { Formik } from "formik";
+import { Formik, ErrorMessage } from "formik";
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useMutation } from "react-query";
@@ -37,14 +37,42 @@ const initFormData = {
   phone: "",
 };
 
+function validateContactForm(values) {
+  const errors = {};
+
+  if (values.name === "") {
+    errors.name = "Name should be filled";
+  }
+
+  if (values.email.indexOf("@") === -1) {
+    errors.email = "Email is not valid";
+  }
+  if (!values.phone.match(/^[0-9]+$/)) {
+    errors.phone = "Phone number is not valid";
+  }
+
+  return errors;
+}
+
 function AddContactForm({ onAddContact }) {
   function onSave(values) {
     onAddContact(values);
   }
 
   return (
-    <Formik initialValues={initFormData} onSubmit={onSave}>
-      {({ values, handleSubmit, handleChange, handleBlur, isSubmitting }) => (
+    <Formik
+      initialValues={initFormData}
+      onSubmit={onSave}
+      validate={validateContactForm}
+    >
+      {({
+        values,
+        errors,
+        handleSubmit,
+        handleChange,
+        handleBlur,
+        isSubmitting,
+      }) => (
         <form onSubmit={handleSubmit}>
           <Form.Group controlId="name">
             <Form.Label>Name {values.name}</Form.Label>
@@ -54,6 +82,7 @@ function AddContactForm({ onAddContact }) {
               onChange={handleChange}
               onBlur={handleBlur}
             />
+            <ErrorMessage name="name" component={Error} />
           </Form.Group>
           <Form.Group controlId="email">
             <Form.Label>Email</Form.Label>
@@ -63,6 +92,7 @@ function AddContactForm({ onAddContact }) {
               onChange={handleChange}
               onBlur={handleBlur}
             />
+            <ErrorMessage name="email" component={Error} />
           </Form.Group>
           <Form.Group controlId="phone">
             <Form.Label>Phone</Form.Label>
@@ -72,6 +102,7 @@ function AddContactForm({ onAddContact }) {
               onChange={handleChange}
               onBlur={handleBlur}
             />
+            <ErrorMessage name="phone" component={Error} />
           </Form.Group>
           <Form.Group>
             <Button type="submit">Add Contact</Button>
@@ -80,4 +111,8 @@ function AddContactForm({ onAddContact }) {
       )}
     </Formik>
   );
+}
+
+function Error({ children }) {
+  return <Form.Text className="text-danger">{children}</Form.Text>;
 }
