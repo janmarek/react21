@@ -1,4 +1,4 @@
-import { Formik, ErrorMessage } from "formik";
+import { Formik, ErrorMessage, FieldArray } from "formik";
 import React, { useState } from "react";
 import { Button, Form, FormControl } from "react-bootstrap";
 import { useMutation } from "react-query";
@@ -36,6 +36,8 @@ const initFormData = {
   name: "",
   email: "@",
   phone: "",
+  usePhone: false,
+  otherPhoneNumbers: [],
 };
 
 function AddContactForm({ onAddContact }) {
@@ -64,6 +66,8 @@ function AddContactForm({ onAddContact }) {
     phone: yup.number().required(),
   });
 
+  const emptyPhoneNumber = { phone: "", type: "home" };
+
   return (
     <Formik
       initialValues={initFormData}
@@ -72,15 +76,65 @@ function AddContactForm({ onAddContact }) {
     >
       {({ values, handleSubmit, isSubmitting, getFieldProps }) => (
         <form onSubmit={handleSubmit}>
+          {JSON.stringify(values)}
           <FormControlWrapper title="Name" name="name">
             <Form.Control {...getFieldProps("name")} />
           </FormControlWrapper>
           <FormControlWrapper title="Email" name="email">
             <Form.Control {...getFieldProps("email")} />
           </FormControlWrapper>
-          <FormControlWrapper title="Phone" name="phone">
-            <Form.Control {...getFieldProps("phone")} />
-          </FormControlWrapper>
+          <Form.Group>
+            <Form.Check {...getFieldProps("usePhone")} label="I have a phone" />
+          </Form.Group>
+          {values.usePhone && (
+            <FormControlWrapper title="Phone" name="phone">
+              <Form.Control {...getFieldProps("phone")} />
+            </FormControlWrapper>
+          )}
+          <FieldArray
+            name="otherPhoneNumbers"
+            render={(arrayHelpers) => {
+              return (
+                <>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Phone number</th>
+                        <th>Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {values.otherPhoneNumbers.map((value, i) => (
+                        <tr key={i}>
+                          <td>
+                            <Form.Control
+                              {...getFieldProps(
+                                `otherPhoneNumbers[${i}].phone`
+                              )}
+                            />
+                          </td>
+                          <td>
+                            <Form.Select
+                              {...getFieldProps(`otherPhoneNumbers[${i}].type`)}
+                            >
+                              <option value="home">home</option>
+                              <option value="mobile">mobile</option>
+                            </Form.Select>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+
+                  <p>
+                    <Button onClick={() => arrayHelpers.push(emptyPhoneNumber)}>
+                      Add
+                    </Button>
+                  </p>
+                </>
+              );
+            }}
+          />
           <Form.Group>
             <Button type="submit">Add Contact</Button>
           </Form.Group>
