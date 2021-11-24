@@ -59,49 +59,42 @@ function AddContactForm({ onAddContact }) {
     onAddContact(values);
   }
 
+  // const props = {
+  //   value: "Honza",
+  //   name: "name",
+  //   onBlur: () => {},
+  //   onChange: () => {},
+  // };
+
+  // return <input value={props.value} onBlur={props.onBlur} />;
+  // return <input {...props} />;
+
+  // const otherProps = { ...props, value: "", id: 123 };
+
+  // const arr1 = [1, 2, 3];
+  // const arr2 = [4, ...arr1];
+
   return (
     <Formik
       initialValues={initFormData}
       onSubmit={onSave}
       validate={validateContactForm}
     >
-      {({
-        values,
-        errors,
-        handleSubmit,
-        handleChange,
-        handleBlur,
-        isSubmitting,
-      }) => (
+      {({ values, handleSubmit, isSubmitting, getFieldProps }) => (
         <form onSubmit={handleSubmit}>
           <Form.Group controlId="name">
-            <Form.Label>Name {values.name}</Form.Label>
-            <Form.Control
-              name="name"
-              value={values.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+            <Form.Label>Name</Form.Label>
+            <Form.Control {...getFieldProps("name")} />
             <ErrorMessage name="name" component={Error} />
           </Form.Group>
           <Form.Group controlId="email">
             <Form.Label>Email</Form.Label>
-            <Form.Control
-              name="email"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+            <Form.Control {...getFieldProps("email")} />
             <ErrorMessage name="email" component={Error} />
           </Form.Group>
           <Form.Group controlId="phone">
             <Form.Label>Phone</Form.Label>
-            <Form.Control
-              name="phone"
-              value={values.phone}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+            <Form.Control {...getFieldProps("phone")} />
             <ErrorMessage name="phone" component={Error} />
           </Form.Group>
           <Form.Group>
