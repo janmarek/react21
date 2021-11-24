@@ -2,12 +2,11 @@ import React from "react";
 import { Contact } from "./Contact";
 import { Link } from "react-router-dom";
 import { ROUTE_ADD } from "./routes";
-import { useContacts, useContactsCustom } from "./contactsModel";
+import { useContacts } from "./contactsModel";
 import { Alert } from "react-bootstrap";
 
 export function ContactListPage() {
   const { isError, isLoading, data: contacts } = useContacts();
-  //   const { isLoading: loadings, data } = useContactsCustom();
 
   return (
     <>

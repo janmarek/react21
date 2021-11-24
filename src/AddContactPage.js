@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useMutation } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { saveContact } from "./contactsModel";
 import { ROUTE_HOMEPAGE } from "./routes";
@@ -7,9 +8,12 @@ import { ROUTE_HOMEPAGE } from "./routes";
 export function AddContactPage() {
   const navigate = useNavigate();
 
-  function onAddContact(contact) {
-    saveContact(contact).then(() => navigate(ROUTE_HOMEPAGE));
-  }
+  const saveContactMutation = useMutation(saveContact, {
+    onSuccess: () => {
+      navigate(ROUTE_HOMEPAGE);
+    },
+    retry: 3,
+  });
 
   return (
     <>
@@ -19,7 +23,9 @@ export function AddContactPage() {
           Go Back
         </Link>
       </p>
-      <AddContactForm onAddContact={onAddContact} />
+      <AddContactForm
+        onAddContact={(contact) => saveContactMutation.mutate(contact)}
+      />
     </>
   );
 }
