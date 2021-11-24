@@ -1,11 +1,12 @@
 import { Formik, ErrorMessage, FieldArray } from "formik";
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Button, Form, FormControl } from "react-bootstrap";
 import { useMutation } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { saveContact } from "./contactsModel";
 import { ROUTE_HOMEPAGE } from "./routes";
 import * as yup from "yup";
+import { LanguageContext } from "./LanguageContext";
 
 export function AddContactPage() {
   const navigate = useNavigate();
@@ -17,9 +18,15 @@ export function AddContactPage() {
     retry: 3,
   });
 
+  const language = useContext(LanguageContext);
+  const titleTranslations = {
+    cs: "Přidat kontakt",
+    en: "Add contact",
+  };
+
   return (
     <>
-      <h1>Add Contact</h1>
+      <h1>{titleTranslations[language]}</h1>
       <p>
         <Link to={ROUTE_HOMEPAGE} className="btn btn-primary">
           Go Back
