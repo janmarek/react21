@@ -1,6 +1,6 @@
 import { Formik, ErrorMessage } from "formik";
 import React, { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, FormControl } from "react-bootstrap";
 import { useMutation } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { saveContact } from "./contactsModel";
@@ -82,27 +82,31 @@ function AddContactForm({ onAddContact }) {
     >
       {({ values, handleSubmit, isSubmitting, getFieldProps }) => (
         <form onSubmit={handleSubmit}>
-          <Form.Group controlId="name">
-            <Form.Label>Name</Form.Label>
+          <FormControlWrapper title="Name" name="name">
             <Form.Control {...getFieldProps("name")} />
-            <ErrorMessage name="name" component={Error} />
-          </Form.Group>
-          <Form.Group controlId="email">
-            <Form.Label>Email</Form.Label>
+          </FormControlWrapper>
+          <FormControlWrapper title="Email" name="email">
             <Form.Control {...getFieldProps("email")} />
-            <ErrorMessage name="email" component={Error} />
-          </Form.Group>
-          <Form.Group controlId="phone">
-            <Form.Label>Phone</Form.Label>
+          </FormControlWrapper>
+          <FormControlWrapper title="Phone" name="phone">
             <Form.Control {...getFieldProps("phone")} />
-            <ErrorMessage name="phone" component={Error} />
-          </Form.Group>
+          </FormControlWrapper>
           <Form.Group>
             <Button type="submit">Add Contact</Button>
           </Form.Group>
         </form>
       )}
     </Formik>
+  );
+}
+
+function FormControlWrapper({ name, title, children }) {
+  return (
+    <Form.Group controlId={name}>
+      <Form.Label>{title}</Form.Label>
+      {children}
+      <ErrorMessage name={name} component={Error} />
+    </Form.Group>
   );
 }
 
