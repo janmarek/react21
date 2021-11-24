@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Contact } from "./Contact";
 import { Link } from "react-router-dom";
 import { ROUTE_ADD } from "./routes";
-import { loadContacts } from "./contactsModel";
+import { useContacts, useContactsCustom } from "./contactsModel";
 import { Alert } from "react-bootstrap";
-import { useQuery } from "react-query";
 
 export function ContactListPage() {
-  const {
-    isError,
-    isLoading,
-    data: contacts,
-  } = useQuery("load-contacts", loadContacts);
+  const { isError, isLoading, data: contacts } = useContacts();
+  //   const { isLoading: loadings, data } = useContactsCustom();
 
   return (
     <>
