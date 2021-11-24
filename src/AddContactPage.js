@@ -5,6 +5,7 @@ import { useMutation } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { saveContact } from "./contactsModel";
 import { ROUTE_HOMEPAGE } from "./routes";
+import * as yup from "yup";
 
 export function AddContactPage() {
   const navigate = useNavigate();
@@ -37,23 +38,6 @@ const initFormData = {
   phone: "",
 };
 
-function validateContactForm(values) {
-  const errors = {};
-
-  if (values.name === "") {
-    errors.name = "Name should be filled";
-  }
-
-  if (values.email.indexOf("@") === -1) {
-    errors.email = "Email is not valid";
-  }
-  if (!values.phone.match(/^[0-9]+$/)) {
-    errors.phone = "Phone number is not valid";
-  }
-
-  return errors;
-}
-
 function AddContactForm({ onAddContact }) {
   function onSave(values) {
     onAddContact(values);
@@ -74,11 +58,17 @@ function AddContactForm({ onAddContact }) {
   // const arr1 = [1, 2, 3];
   // const arr2 = [4, ...arr1];
 
+  const contactFormValidationSchema = yup.object().shape({
+    name: yup.string("name_is_not_ok").required(),
+    email: yup.string().email().required(),
+    phone: yup.number().required(),
+  });
+
   return (
     <Formik
       initialValues={initFormData}
       onSubmit={onSave}
-      validate={validateContactForm}
+      validationSchema={contactFormValidationSchema}
     >
       {({ values, handleSubmit, isSubmitting, getFieldProps }) => (
         <form onSubmit={handleSubmit}>
