@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { Container, Button } from "react-bootstrap";
 import { Routes, Route } from "react-router-dom";
 import { ROUTE_ADD, ROUTE_HOMEPAGE } from "./routes";
-import { ContactListPage } from "./ContactListPage";
-import { AddContactPage } from "./AddContactPage";
+import { ContactListPage } from "./ContactList/ContactListPage";
+import { AddContactPage } from "./AddContact/AddContactPage";
 import { IntlProvider } from "react-intl";
 import { translations } from "./translations";
 

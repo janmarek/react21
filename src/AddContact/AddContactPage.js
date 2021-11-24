@@ -3,8 +3,8 @@ import React from "react";
 import { Button, Form } from "react-bootstrap";
 import { useMutation } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
-import { saveContact } from "./contactsModel";
-import { ROUTE_HOMEPAGE } from "./routes";
+import { saveContact } from "../contactsModel";
+import { ROUTE_HOMEPAGE } from "../routes";
 import * as yup from "yup";
 import { FormattedDate, FormattedMessage, FormattedNumber } from "react-intl";
 

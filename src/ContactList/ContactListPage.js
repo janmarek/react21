@@ -1,8 +1,8 @@
 import React from "react";
 import { Contact } from "./Contact";
 import { Link } from "react-router-dom";
-import { ROUTE_ADD } from "./routes";
-import { useContacts } from "./contactsModel";
+import { ROUTE_ADD } from "../routes";
+import { useContacts } from "../contactsModel";
 import { Alert } from "react-bootstrap";
 import styled from "styled-components";
 
