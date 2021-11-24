@@ -4,11 +4,16 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { App } from "./App";
 import { BrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")

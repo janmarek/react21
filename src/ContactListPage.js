@@ -3,21 +3,25 @@ import { Contact } from "./Contact";
 import { Link } from "react-router-dom";
 import { ROUTE_ADD } from "./routes";
 import { loadContacts } from "./contactsModel";
+import { Alert } from "react-bootstrap";
+import { useQuery } from "react-query";
 
 export function ContactListPage() {
-  const [contacts, setContacts] = useState([]);
-
-  useEffect(() => {
-    loadContacts().then((response) => setContacts(response.data.items));
-  }, []);
+  const {
+    isError,
+    isLoading,
+    data: contacts,
+  } = useQuery("load-contacts", loadContacts);
 
   return (
     <>
       <h1>Contact List</h1>
+      {isError && <Alert variant="danger">Error</Alert>}
       <p>
         <Link to={ROUTE_ADD}>Add Form</Link>
       </p>
-      <ContactList contacts={contacts} />
+      {isLoading && <p>Loading...</p>}
+      {contacts && <ContactList contacts={contacts} />}
     </>
   );
 }
