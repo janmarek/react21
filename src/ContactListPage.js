@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Contact } from "./Contact";
 import { Link } from "react-router-dom";
 import { ROUTE_ADD } from "./routes";
+import { loadContacts } from "./contactsModel";
 
-export function ContactListPage({ contacts }) {
+export function ContactListPage() {
+  const [contacts, setContacts] = useState([]);
+
+  useEffect(() => {
+    loadContacts().then((response) => setContacts(response.data.items));
+  }, []);
+
   return (
     <>
       <h1>Contact List</h1>

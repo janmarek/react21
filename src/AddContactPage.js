@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { saveContact } from "./contactsModel";
 import { ROUTE_HOMEPAGE } from "./routes";
 
-export function AddContactPage({ onAddContact }) {
+export function AddContactPage() {
+  const navigate = useNavigate();
+
+  function onAddContact(contact) {
+    saveContact(contact).then(() => navigate(ROUTE_HOMEPAGE));
+  }
+
   return (
     <>
       <h1>Add Contact</h1>
